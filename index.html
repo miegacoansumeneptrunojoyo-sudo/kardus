@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17365d">
+  <meta name="description" content="Sistem rekap uang kardus pribadi dengan penyimpanan lokal di browser.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <title>Rekap Uang Kardus</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">₽</div><div><strong>Uang Kardus</strong><small>Rekap Keuangan</small></div></div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-item" data-view="transactions"><span>⇄</span> Transaksi</button>
+        <button class="nav-item" data-view="reports"><span>▤</span> Laporan</button>
+      </nav>
+      <div class="sidebar-note"><span class="dot"></span> Penyimpanan lokal aktif<small>Data hanya ada di browser dan perangkat ini. Cadangkan secara berkala.</small></div>
+      <div class="sidebar-footer">Rekap Uang Kardus<br><small>Versi 1.1 · Mode pribadi</small></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><p class="eyebrow">SISTEM ADMINISTRASI</p><h1 id="page-title">Dashboard Keuangan</h1></div>
+        <div class="top-actions"><button class="btn btn-light" id="backup-btn">↧ Cadangkan Data</button><button class="btn btn-light" id="restore-btn">↥ Pulihkan</button><button class="btn btn-light" id="export-btn">↓ Ekspor CSV</button><button class="btn btn-primary" id="quick-add">＋ Tambah transaksi</button><input id="restore-file" type="file" accept=".json,application/json" hidden></div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="welcome"><div><p class="eyebrow">RINGKASAN KEUANGAN</p><h2>Kelola uang kardus dengan lebih mudah.</h2><p>Pantau uang masuk, uang keluar, dan saldo terkini dalam satu tempat.</p></div><div class="welcome-icon">↗</div></div>
+        <div class="stat-grid">
+          <article class="stat-card income"><div class="stat-top"><span>Total Pemasukan</span><span class="stat-icon">＋</span></div><strong id="total-income">Rp0</strong><small>Akumulasi seluruh pemasukan</small></article>
+          <article class="stat-card expense"><div class="stat-top"><span>Total Pengeluaran</span><span class="stat-icon">−</span></div><strong id="total-expense">Rp0</strong><small>Akumulasi seluruh pengeluaran</small></article>
+          <article class="stat-card balance"><div class="stat-top"><span>Sisa Uang</span><span class="stat-icon">◈</span></div><strong id="total-balance">Rp0</strong><small>Total pemasukan dikurangi pengeluaran</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Arus Kas Bulanan</h3><p>Perbandingan pemasukan dan pengeluaran</p></div><select id="chart-year" aria-label="Tahun laporan"></select></div><div id="chart" class="chart"></div><div class="legend"><span><i class="legend-income"></i> Pemasukan</span><span><i class="legend-expense"></i> Pengeluaran</span></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>Ringkasan</h3><p>Periode tahun terpilih</p></div></div><div class="summary-list"><div><span>Jumlah transaksi</span><strong id="summary-count">0</strong></div><div><span>Pemasukan tahun ini</span><strong id="summary-income">Rp0</strong></div><div><span>Pengeluaran tahun ini</span><strong id="summary-expense">Rp0</strong></div><div class="summary-total"><span>Saldo tahun ini</span><strong id="summary-balance">Rp0</strong></div></div><button class="btn btn-outline full" data-goto="reports">Lihat laporan lengkap →</button></article>
+        </div>
+        <article class="panel recent-panel"><div class="panel-heading"><div><h3>Transaksi Terbaru</h3><p>Catatan transaksi yang baru dimasukkan</p></div><button class="text-btn" data-goto="transactions">Lihat semua →</button></div><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th class="right">Pemasukan</th><th class="right">Pengeluaran</th><th class="right">Saldo</th></tr></thead><tbody id="recent-body"></tbody></table></div><div id="recent-empty" class="empty-state hidden">Belum ada transaksi. Tambahkan transaksi pertama Anda.</div></article>
+      </section>
+
+      <section class="view" id="view-transactions">
+        <div class="section-intro"><div><h2>Daftar Transaksi</h2><p>Catat dan kelola setiap pergerakan uang kardus.</p></div><button class="btn btn-primary" id="add-transaction">＋ Tambah transaksi</button></div>
+        <div class="panel filters"><input id="search-input" type="search" placeholder="Cari keterangan transaksi…"><select id="type-filter"><option value="all">Semua kategori</option><option value="Pemasukan">Pemasukan</option><option value="Pengeluaran">Pengeluaran</option></select><input id="date-filter" type="month" aria-label="Filter bulan"></div>
+        <article class="panel"><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th class="right">Pemasukan</th><th class="right">Pengeluaran</th><th class="right">Saldo</th><th>Aksi</th></tr></thead><tbody id="transactions-body"></tbody></table></div><div id="transactions-empty" class="empty-state hidden">Tidak ada transaksi yang cocok.</div><div class="table-footer"><span id="result-count">0 transaksi</span><div class="pagination"><button id="prev-page" class="btn btn-light btn-sm">←</button><span id="page-info">1 / 1</span><button id="next-page" class="btn btn-light btn-sm">→</button></div></div></article>
+      </section>
+
+      <section class="view" id="view-reports">
+        <div class="section-intro"><div><h2>Laporan Keuangan</h2><p>Rekap berdasarkan tahun dan bulan transaksi.</p></div><div class="report-actions"><select id="report-year" aria-label="Tahun laporan"></select><button class="btn btn-primary" id="report-export">↓ Unduh laporan CSV</button></div></div>
+        <div class="stat-grid compact"><article class="stat-card income"><span>Total Pemasukan</span><strong id="report-income">Rp0</strong></article><article class="stat-card expense"><span>Total Pengeluaran</span><strong id="report-expense">Rp0</strong></article><article class="stat-card balance"><span>Sisa Uang</span><strong id="report-balance">Rp0</strong></article></div>
+        <article class="panel"><div class="panel-heading"><div><h3>Rekap per Bulan</h3><p>Angka dihitung dari transaksi yang tanggalnya berada pada tahun terpilih.</p></div></div><div class="table-wrap"><table><thead><tr><th>Bulan</th><th class="right">Jumlah transaksi</th><th class="right">Pemasukan</th><th class="right">Pengeluaran</th><th class="right">Selisih</th></tr></thead><tbody id="report-body"></tbody></table></div></article>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="transaction-dialog">
+    <form id="transaction-form" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">CATAT KEUANGAN</p><h2 id="dialog-title">Tambah Transaksi</h2></div><button type="button" class="close-btn" id="close-dialog" aria-label="Tutup">×</button></div>
+      <input type="hidden" id="transaction-id">
+      <label for="transaction-date">Tanggal transaksi</label><input id="transaction-date" type="date" required>
+      <label for="transaction-description">Keterangan</label><input id="transaction-description" type="text" maxlength="120" placeholder="Contoh: Penjualan kardus bekas" required>
+      <label for="transaction-type">Jenis transaksi</label><select id="transaction-type" required><option value="Pemasukan">Pemasukan</option><option value="Pengeluaran">Pengeluaran</option></select>
+      <label for="transaction-amount">Nominal (Rp)</label><input id="transaction-amount" type="number" min="1" step="1" placeholder="Contoh: 50000" required>
+      <label for="transaction-note">Catatan (opsional)</label><textarea id="transaction-note" rows="2" maxlength="300" placeholder="Tambahkan catatan bila diperlukan"></textarea>
+      <div class="form-hint">Isi nominal tanpa titik atau simbol Rp. Saldo dihitung otomatis.</div>
+      <div class="dialog-actions"><button type="button" class="btn btn-light" id="cancel-dialog">Batal</button><button type="submit" class="btn btn-primary">Simpan transaksi</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="assets/app.js"></script>
+  <script>if ("serviceWorker" in navigator && location.protocol.startsWith("http")) { window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(() => {})); }</script>
+</body>
+</html>
