@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <title>Rekap Uang Kardus</title>
-  <link rel="stylesheet" href="assets/style.css?v=2.2">
+  <link rel="stylesheet" href="assets/style.css?v=2.3">
 </head>
 <body>
   <div class="app-shell">
@@ -71,7 +71,10 @@
     </form>
   </dialog>
   <div id="toast" class="toast" role="status"></div>
-  <script src="assets/app.js?v=2.2"></script>
+  <script>
+document.addEventListener("click",function(e){var b=e.target&&e.target.closest?e.target.closest("#add-transaction"):null;if(!b)return;var d=document.getElementById("transaction-dialog"),f=document.getElementById("transaction-form");if(!d||!f)return;if(!d.open){f.reset();var n=new Date();document.getElementById("transaction-date").value=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");document.getElementById("transaction-id").value="";document.getElementById("transaction-type").value="Pemasukan";document.getElementById("dialog-title").textContent="Tambah Transaksi";try{if(typeof d.showModal==="function")d.showModal();else{d.setAttribute("open","");d.style.display="block"}}catch(_){d.setAttribute("open","");d.style.display="block"}}},true);
+</script>
+<script src="assets/app.js?v=2.3"></script>
   <script>if ("serviceWorker" in navigator && location.protocol.startsWith("http")) { window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(() => {})); }</script>
 </body>
 </html>
