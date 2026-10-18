@@ -166,3 +166,7 @@ dialog input:focus,dialog select:focus,dialog textarea:focus{outline:2px solid #
   .welcome h2{font-size:18px}
   .stat-card strong{font-size:23px}
 }
+
+
+/* v1.5: remove global backup/export/quick-add action strip from every menu */
+.top-actions:empty{display:none!important}
