@@ -123,3 +123,46 @@ dialog input:focus,dialog select:focus,dialog textarea:focus{outline:2px solid #
   .stat-card strong{font-size:22px}
   .panel{padding:11px}
 }
+
+
+/* v1.4: stronger small-screen layout fixes */
+*,*::before,*::after{box-sizing:border-box}
+@media(max-width:760px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  .app-shell{width:100%;min-width:0;max-width:100%}
+  .main{display:block;flex:1 1 auto;width:100%;min-width:0;max-width:100%;margin:0;padding:16px 14px 96px;overflow-x:clip}
+  .topbar{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:12px;width:100%;min-width:0;margin:0 0 22px}
+  .topbar>div:first-child{display:block;width:100%;min-width:0}
+  .eyebrow{font-size:10px;line-height:1.4;letter-spacing:1.3px}
+  .topbar h1{display:block;width:100%;max-width:100%;font-size:clamp(22px,6vw,28px);line-height:1.2;letter-spacing:-.5px;overflow-wrap:normal;word-break:normal}
+  .top-actions{display:grid;width:100%;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:stretch}
+  .top-actions .btn{display:flex;width:100%;min-width:0;max-width:100%;min-height:42px;padding:10px 7px;align-items:center;justify-content:center;text-align:center;white-space:normal;overflow-wrap:anywhere;font-size:12px;line-height:1.25}
+  .top-actions #quick-add{grid-column:1/-1;grid-row:1;order:0}
+  .top-actions .btn:not(#quick-add){grid-column:auto}
+  .welcome,.stat-grid,.content-grid,.panel,.filters,.section-intro{width:100%;min-width:0;max-width:100%}
+  .welcome{padding:19px 17px;margin-bottom:16px}
+  .welcome h2{font-size:20px;line-height:1.3;overflow-wrap:normal}
+  .welcome p{font-size:14px;line-height:1.5}
+  .stat-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+  .stat-card{min-width:0;width:100%;padding:16px}
+  .section-intro{gap:10px}
+  .section-intro h2{font-size:20px;line-height:1.3}
+  .filters{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;padding:12px}
+  .filters>*{width:100%;min-width:0;max-width:100%}
+  .filters input,.filters select{width:100%;min-width:0;max-width:100%}
+  .panel{padding:12px}
+  .table-wrap{display:block;width:100%;min-width:0;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .table-wrap table{width:max-content;min-width:760px;max-width:none}
+  .chart{width:100%;min-width:0;max-width:100%;overflow:hidden}
+  .chart svg,.chart canvas{display:block;width:100%;max-width:100%}
+}
+@media(max-width:390px){
+  .main{padding:14px 12px 92px}
+  .topbar{gap:10px}
+  .topbar h1{font-size:23px}
+  .top-actions{gap:7px}
+  .top-actions .btn{font-size:11px;padding:9px 5px}
+  .welcome{padding:17px 15px}
+  .welcome h2{font-size:18px}
+  .stat-card strong{font-size:23px}
+}
